@@ -15,12 +15,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.error
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,10 +73,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             isError = errorMessage.isNotEmpty(),
             supportingText = {
                 if (errorMessage.isNotEmpty()) {
-                    Text(text = errorMessage)
+                    Text(text = errorMessage, Modifier.clearAndSetSemantics {})
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().semantics {
+                if (errorMessage.isNotEmpty()) {
+                    error(errorMessage)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
